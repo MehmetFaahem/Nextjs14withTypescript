@@ -14,8 +14,17 @@ import "swiper/css/pagination";
 // import required modules
 import { EffectCoverflow, Autoplay } from "swiper/modules";
 
+interface CarouselItem {
+  id: number;
+  name: string;
+  image: string;
+  experience: string;
+  title: string;
+  tags: string[];
+}
+
 const Carousel = () => {
-  const [data, setData] = useState([]);
+  const [data, setData] = useState<CarouselItem[]>([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -50,7 +59,7 @@ const Carousel = () => {
         }}
       >
         {[...data, ...data, ...data, ...data, ...data, ...data].map(
-          (item: any, index: number) => (
+          (item: CarouselItem, index: number) => (
             <SwiperSlide
               key={index}
               className="bg-white rounded-lg shadow-lg w-[292px] h-[408px] p-[20px] flex flex-col gap-4 justify-center items-center"

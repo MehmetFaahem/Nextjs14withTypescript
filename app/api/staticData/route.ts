@@ -1,7 +1,6 @@
-import type { NextApiRequest } from "next";
 import { NextResponse } from "next/server";
 
-export async function GET(request: NextApiRequest) {
+export async function GET() {
   const sampleData = [
     {
       id: 1,
