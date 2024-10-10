@@ -37,47 +37,35 @@ const Carousel = () => {
     fetchData();
   }, []);
 
+  useEffect(() => {
+    if (swiperRef.current && swiperRef.current.swiper) {
+      swiperRef.current.swiper.update();
+    }
+  }, [isClient]);
+
   const handlePrev = () => {
     if (swiperRef.current && swiperRef.current.swiper) {
+      setIsClient(!isClient);
       swiperRef.current.swiper.slidePrev();
     }
   };
 
   const handleNext = () => {
     if (swiperRef.current && swiperRef.current.swiper) {
+      setIsClient(!isClient);
+      swiperRef.current.swiper.slidePrev();
       swiperRef.current.swiper.slideNext();
     }
   };
-
-  useEffect(() => {
-    if (swiperRef.current && swiperRef.current.swiper) {
-      swiperRef.current.swiper.update();
-    }
-  }, [data]);
-
-  if (!isClient) {
-    return null; // or a loading indicator
-  }
 
   return (
     <div
       className="w-[44%] mt-[-20px] relative"
       data-tooltip-id="carousel-tooltip"
     >
-      {/* These styles are added to make the carousel work */}
-      <style jsx global>{`
-        .swiper {
-          width: 100%;
-        }
-        .swiper-slide {
-          width: 292px;
-          height: 408px;
-        }
-      `}</style>
       <Swiper
         ref={swiperRef}
         effect={"coverflow"}
-        autoFocus={true}
         grabCursor={true}
         centeredSlides={true}
         slidesPerView={"auto"}
@@ -89,22 +77,20 @@ const Carousel = () => {
           slideShadows: false,
         }}
         modules={[EffectCoverflow, Autoplay, Navigation]}
-        className="mySwiper"
         loop={true}
         autoplay={{
           delay: 1000,
           disableOnInteraction: false,
-        }}
-        onSwiper={(swiper) => {
-          setTimeout(() => {
-            swiper.update();
-          }, 0);
         }}
       >
         {[...data, ...data, ...data, ...data, ...data].map(
           (item: CarouselItem, index: number) => (
             <SwiperSlide
               key={index}
+              style={{
+                height: "408px",
+                width: "292px",
+              }}
               className="bg-white rounded-lg shadow-lg w-[292px] h-[408px] p-[20px] flex flex-col gap-4 justify-center items-center"
             >
               <div className="flex flex-col gap-4 justify-center items-center w-full h-full">
@@ -140,7 +126,7 @@ const Carousel = () => {
       </Swiper>
       <div
         onClick={handlePrev}
-        className="absolute -left-[50px] top-1/2 transform -translate-y-1/2 z-10 cursor-pointer"
+        className="absolute -left-[60px] top-[43%] transform -translate-y-1/2 z-10 cursor-pointer p-4"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -154,7 +140,7 @@ const Carousel = () => {
       </div>
       <div
         onClick={handleNext}
-        className="absolute -right-[50px] top-1/2 transform -translate-y-1/2 z-10 cursor-pointer"
+        className="absolute -right-[60px] top-[43%] transform -translate-y-1/2 z-10 cursor-pointer p-4"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
