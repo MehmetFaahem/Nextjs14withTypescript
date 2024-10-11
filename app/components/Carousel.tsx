@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import { Swiper, SwiperSlide } from "swiper/react";
+import { Swiper as SwiperClass } from "swiper";
 import { Tooltip } from "react-tooltip";
 import "react-tooltip/dist/react-tooltip.css";
 
@@ -12,6 +13,7 @@ import "swiper/css/pagination";
 import "swiper/css/navigation";
 
 import { EffectCoverflow, Autoplay, Navigation } from "swiper/modules";
+import { motion } from "framer-motion";
 
 interface CarouselItem {
   id: number;
@@ -24,54 +26,69 @@ interface CarouselItem {
 
 const Carousel = () => {
   const [data, setData] = useState<CarouselItem[]>([]);
-  const swiperRef = useRef<any>(null);
-  const [isClient, setIsClient] = useState(false);
+  const [showTooltip, setShowTooltip] = useState(false);
+  const swiperRef = useRef<SwiperClass | null>(null);
 
   useEffect(() => {
-    setIsClient(true);
     const fetchData = async () => {
       const response = await fetch("/api/staticData");
       const data = await response.json();
       setData(data);
     };
     fetchData();
+
+    const tooltipTimeout = setTimeout(() => {
+      setShowTooltip(true);
+    }, 300);
+
+    const swiperTimeout = setTimeout(() => {
+      if (swiperRef.current) {
+        swiperRef.current.slideTo(1);
+      }
+    }, 1000);
+
+    return () => {
+      clearTimeout(tooltipTimeout);
+      clearTimeout(swiperTimeout);
+    };
   }, []);
 
-  useEffect(() => {
-    if (swiperRef.current && swiperRef.current.swiper) {
-      swiperRef.current.swiper.update();
-    }
-  }, [isClient]);
-
   const handlePrev = () => {
-    if (swiperRef.current && swiperRef.current.swiper) {
-      setIsClient(!isClient);
-      swiperRef.current.swiper.slidePrev();
+    if (swiperRef.current) {
+      swiperRef.current.slidePrev();
     }
   };
 
   const handleNext = () => {
-    if (swiperRef.current && swiperRef.current.swiper) {
-      setIsClient(!isClient);
-      swiperRef.current.swiper.slidePrev();
-      swiperRef.current.swiper.slideNext();
+    if (swiperRef.current) {
+      swiperRef.current.slideNext();
     }
   };
 
   return (
-    <div
-      className="w-[44%] mt-[-20px] relative"
+    <motion.div
+      className="w-[340px] md:w-[44%] mt-[-20px] max-md:mt-32 relative max-md:mx-auto max-md:mb-10"
       data-tooltip-id="carousel-tooltip"
+      data-tooltip-offset={30}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.5 }}
     >
       <Swiper
-        ref={swiperRef}
+        initialSlide={1}
+        onSwiper={(swiper) => {
+          swiperRef.current = swiper;
+        }}
         effect={"coverflow"}
         grabCursor={true}
         centeredSlides={true}
         slidesPerView={"auto"}
         coverflowEffect={{
           rotate: 0,
-          stretch: 155,
+          stretch:
+            typeof window !== "undefined" && window.screen.availWidth < 768
+              ? 192
+              : 155,
           depth: 100,
           modifier: 1,
           slideShadows: false,
@@ -89,7 +106,11 @@ const Carousel = () => {
               key={index}
               style={{
                 height: "408px",
-                width: "292px",
+                width:
+                  typeof window !== "undefined" &&
+                  window.screen.availWidth < 768
+                    ? "250px"
+                    : "292px",
               }}
               className="bg-white rounded-lg shadow-lg w-[292px] h-[408px] p-[20px] flex flex-col gap-4 justify-center items-center"
             >
@@ -154,8 +175,11 @@ const Carousel = () => {
       </div>
       <Tooltip
         id="carousel-tooltip"
+        isOpen={showTooltip}
+        positionStrategy="fixed"
         place="top"
         content={"월 100만원"}
+        delayShow={300}
         render={() => (
           <p className="flex flex-row gap-1 place-items-center">
             <span>
@@ -172,7 +196,6 @@ const Carousel = () => {
             월<span className="font-[900]">100</span>만원
           </p>
         )}
-        delayShow={300}
         style={{
           backgroundColor: "rgba(255, 255, 255, 1)",
           color: "rgba(0, 198, 150, 1)",
@@ -180,9 +203,8 @@ const Carousel = () => {
           fontSize: "18px",
           fontWeight: "bold",
         }}
-        defaultIsOpen={true}
       />
-    </div>
+    </motion.div>
   );
 };
 

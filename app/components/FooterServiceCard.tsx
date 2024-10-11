@@ -1,10 +1,11 @@
 import React from "react";
-
+import Image from "next/image";
+import { StaticImageData } from "next/image";
 type ServiceCardProps = {
-  iconSrc: string;
+  iconSrc: StaticImageData;
   title: string;
   linkText: string;
-  arrowSrc: string;
+  arrowSrc: StaticImageData;
 };
 
 const ServiceCard: React.FC<ServiceCardProps> = ({
@@ -14,11 +15,11 @@ const ServiceCard: React.FC<ServiceCardProps> = ({
   arrowSrc,
 }) => {
   return (
-    <div className="flex flex-col w-3/12 max-md:ml-0 max-md:w-full">
+    <div className="flex flex-col w-[23%] max-md:ml-0 max-md:w-[46%]">
       <div className="flex overflow-hidden flex-col items-start p-4 mx-auto w-full bg-white rounded-xl max-md:mt-4">
         <div className="flex flex-col">
           <div className="flex flex-col justify-center items-center px-2 w-10 h-10 bg-gray-100 rounded-lg">
-            <img
+            <Image
               loading="lazy"
               src={iconSrc}
               alt=""
@@ -29,7 +30,7 @@ const ServiceCard: React.FC<ServiceCardProps> = ({
         </div>
         <div className="flex gap-1 items-start mt-4 text-sm font-black text-gray-600 whitespace-nowrap">
           <div>{linkText}</div>
-          <img
+          <Image
             loading="lazy"
             src={arrowSrc}
             alt=""

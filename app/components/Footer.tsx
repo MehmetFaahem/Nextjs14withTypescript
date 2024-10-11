@@ -1,52 +1,50 @@
 import React from "react";
 import ServiceCard from "./FooterServiceCard";
 import FooterDetailsCard from "./FooterDetailsCard";
-
+import codeIcon from "../assets/icons/icon-code.png";
+import avatarIcon from "../assets/icons/icon-avatar.png";
+import korIcon from "../assets/icons/icon-kor.png";
+import gearIcon from "../assets/icons/icon-gear.png";
+import rightArrowIcon from "../assets/icons/icon-right.png";
+import logo from "../assets/colored_logo.png";
+import Image from "next/image";
 const serviceData = [
   {
-    iconSrc:
-      "https://cdn.builder.io/api/v1/image/assets/TEMP/dc61238082ab48f79f4f3613a3553045bea97f8991873e8e0dc5836d8c8893f8?placeholderIfAbsent=true&apiKey=2372ca227ccb46eeb978f53bfef9667b",
+    iconSrc: codeIcon,
     title: "해외 개발자 원격 채용",
     linkText: "바로가기",
-    arrowSrc:
-      "https://cdn.builder.io/api/v1/image/assets/TEMP/837748f99c5d3e4034a0192fe96365b74eb25a726eb6050d85043583d6981c73?placeholderIfAbsent=true&apiKey=2372ca227ccb46eeb978f53bfef9667b",
+    arrowSrc: rightArrowIcon,
   },
   {
-    iconSrc:
-      "https://cdn.builder.io/api/v1/image/assets/TEMP/55e3987dcdca131940aeb2900bd710cfc75c82a8db03c8901f686a3c57832144?placeholderIfAbsent=true&apiKey=2372ca227ccb46eeb978f53bfef9667b",
+    iconSrc: avatarIcon,
     title: "외국인 원격 채용 (비개발)",
     linkText: "바로가기",
-    arrowSrc:
-      "https://cdn.builder.io/api/v1/image/assets/TEMP/837748f99c5d3e4034a0192fe96365b74eb25a726eb6050d85043583d6981c73?placeholderIfAbsent=true&apiKey=2372ca227ccb46eeb978f53bfef9667b",
+    arrowSrc: rightArrowIcon,
   },
   {
-    iconSrc:
-      "https://cdn.builder.io/api/v1/image/assets/TEMP/384addfe918e649ca343d3ad2c39a93318f7b14d08a9ea1f8eecaa095a44a6d6?placeholderIfAbsent=true&apiKey=2372ca227ccb46eeb978f53bfef9667b",
+    iconSrc: korIcon,
     title: "한국어 가능 외국인 채용",
     linkText: "바로가기",
-    arrowSrc:
-      "https://cdn.builder.io/api/v1/image/assets/TEMP/2f545f1b4f3502077f1a7941d3fd4689caf2a503b877f9483aa717ed1b711542?placeholderIfAbsent=true&apiKey=2372ca227ccb46eeb978f53bfef9667b",
+    arrowSrc: rightArrowIcon,
   },
   {
-    iconSrc:
-      "https://cdn.builder.io/api/v1/image/assets/TEMP/a62f96c04bf4ead5790f08e6782d365499fd6143b29915b6372bbe182319b644?placeholderIfAbsent=true&apiKey=2372ca227ccb46eeb978f53bfef9667b",
+    iconSrc: gearIcon,
     title: "해외 개발자 활용 서비스",
     linkText: "바로가기",
-    arrowSrc:
-      "https://cdn.builder.io/api/v1/image/assets/TEMP/47e75efa01e8a2d9b4292f39ee34ce01761a445b2c7e9f55d0ae61b2db781f83?placeholderIfAbsent=true&apiKey=2372ca227ccb46eeb978f53bfef9667b",
+    arrowSrc: rightArrowIcon,
   },
 ];
 
 const Footer: React.FC = () => {
   return (
-    <main className="flex flex-col max-w-full w-full py-[90px] bg-[#FBFBFB] mx-auto justify-start items-center">
+    <main className="flex flex-col max-w-full w-full py-[90px] bg-[#FBFBFB] mx-auto justify-start items-center max-md:px-5">
       <section className="max-md:max-w-full w-[1190px]">
         <div className="flex gap-5 max-md:flex-col">
           <div className="flex flex-col w-[24%] max-md:ml-0 max-md:w-full">
             <div className="flex flex-col grow items-start text-sm font-black text-gray-600 max-md:mt-10">
-              <img
+              <Image
                 loading="lazy"
-                src="https://cdn.builder.io/api/v1/image/assets/TEMP/3765c4f810f70edb2bbcf9c5362549a0bf2a7e442566fa5677e8671794385c69?placeholderIfAbsent=true&apiKey=2372ca227ccb46eeb978f53bfef9667b"
+                src={logo}
                 alt="Company Logo"
                 className="object-contain max-w-full aspect-[5.49] w-[187px]"
               />
@@ -58,8 +56,8 @@ const Footer: React.FC = () => {
             </div>
           </div>
           <div className="flex flex-col ml-5 w-[76%] max-md:ml-0 max-md:w-full">
-            <div className="max-md:mt-10 max-md:max-w-full">
-              <div className="flex gap-5 max-md:flex-col">
+            <div className="max-md:mt-10">
+              <div className="flex gap-5 flex-wrap">
                 {serviceData.map((service, index) => (
                   <ServiceCard key={index} {...service} />
                 ))}
